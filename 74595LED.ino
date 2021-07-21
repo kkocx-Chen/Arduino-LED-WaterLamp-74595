@@ -1,6 +1,7 @@
 int latchPin = 9;  // Latch pin (STCP腳位)
 int clockPin = 10; // Clock pin (SHCP腳位)
 int dataPin = 11;  // Data pin (DS腳位) 
+int button = 12; //Button 腳位
 const int LED_PIN =  12; 
 byte leds = 0;    // 亮燈的LED數量
 
@@ -20,6 +21,7 @@ void updateright() //由右至左副程式 LSBFIRST
 void setup() 
 {
   // Set all the pins of 74HC595 as OUTPUT
+  pinMode(button, OUTPUT);
   pinMode(latchPin, OUTPUT);
   pinMode(dataPin, OUTPUT);  
   pinMode(clockPin, OUTPUT);
