@@ -21,7 +21,7 @@ void updateright() //由右至左副程式 LSBFIRST
 void setup() 
 {
   // Set all the pins of 74HC595 as OUTPUT
-  pinMode(button, OUTPUT);
+  pinMode(button, INPUT);
   pinMode(latchPin, OUTPUT);
   pinMode(dataPin, OUTPUT);  
   pinMode(clockPin, OUTPUT);
