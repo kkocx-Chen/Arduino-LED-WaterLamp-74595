@@ -9,6 +9,6 @@
 
 
 ### git 指令筆記
-- **git add 新增要commit的檔案**  
-- **git commit -m "Txt" commit 上去到github**  
-- **git push push 上github**
+- **```git add``` 新增要commit的檔案**  
+- **```git commit -m "Txt"``` commit 上去到github**  
+- **```git push``` push 上github**
