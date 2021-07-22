@@ -1,50 +1,81 @@
+#include <ShiftRegister74HC595.h>
+
 int latchPin = 9;  // Latch pin (STCP腳位)
 int clockPin = 10; // Clock pin (SHCP腳位)
-int dataPin = 11;  // Data pin (DS腳位) 
+int dataPin = 11;  // Data pin (DS腳位)
+
+
+
+ShiftRegister74HC595<1> sr(dataPin, clockPin, latchPin);
+ 
 const int LED_PIN =  12; 
 byte leds = 0;    // 亮燈的LED數量
 
-void updateShiftRegister() //由左至右副程式 MSBFIRST
-{
-   digitalWrite(latchPin, LOW);
-   shiftOut(dataPin, clockPin, MSBFIRST, leds);
-   digitalWrite(latchPin, HIGH);
-}
-void updateright() //由右至左副程式 LSBFIRST
-{
-   digitalWrite(latchPin, HIGH);
-   shiftOut(dataPin, clockPin, LSBFIRST, leds);
-   digitalWrite(latchPin, LOW);
-}
-
 void setup() 
 {
-  Serial.begin(9600);
-  // Set all the pins of 74HC595 as OUTPUT
-  pinMode(latchPin, OUTPUT);
-  pinMode(dataPin, OUTPUT);  
-  pinMode(clockPin, OUTPUT);
+  Serial.begin(115200);
+  //74595全關
+  sr.setAllLow();
 }
 
 void loop() 
 {
-  leds = 0; // 一開始燈全滅，所以設為0
-  updateShiftRegister();  //進行送資料的副程式
   delay(500);
-  for (int i = 0; i < 8; i++) //依序亮燈
-  {
-    bitSet(leds, i);    // 經由多少燈要亮的i，換算成10進位，並把結果交給leds
-    updateShiftRegister(); //進行送資料的副程式
+  int i = 0;
+  while(true){
+    set74595LED(i, true);
     delay(200);
-    Serial.println("Test");
+    Serial.write(i);
+    if(i >= 7) break;
+    i++;
   }
-  leds = 0;
-  updateright(); //進行送資料的副程式
-   for (int k = 0; k < 9; k++) //依序亮燈
-  {
-    bitSet(leds, k);    // 經由多少燈要亮的k，換算成10進位，並把結果交給leds
-    updateright(); //進行送資料的副程式
+  set74595All(false);
+  int k = 7;
+  while(true){
+    set74595LED(k, true);
     delay(200);
-    Serial.println("Test2");
+    Serial.write(k);
+    if(k <= 0) break;
+    k--;
+  }
+  set74595All(false);
+}
+
+// 設置74595 LED單個
+// 引數:
+//  - pin(int) 74595腳位
+//  - high(bool) 開/關
+void set74595LED(int pin, bool high) {
+  sr.set(pin, high);
+  if(!high) {
+    pin = 8 + pin;
+  }
+  Serial.write(pin);
+}
+
+// 設置74595 LED全部
+// 引數:
+//  - high(bool) 設置全開/關
+void set74595All(bool high) {
+  if(high) {
+    sr.setAllHigh();
+    Serial.write(0);
+    Serial.write(1);
+    Serial.write(2);
+    Serial.write(3);
+    Serial.write(4);
+    Serial.write(5);
+    Serial.write(6);
+    Serial.write(7);
+  }else{
+    sr.setAllLow();
+    Serial.write(8);
+    Serial.write(9);
+    Serial.write(10);
+    Serial.write(11);
+    Serial.write(12);
+    Serial.write(13);
+    Serial.write(14);
+    Serial.write(15);
   }
 }
