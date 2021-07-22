@@ -1,7 +1,6 @@
 int latchPin = 9;  // Latch pin (STCP腳位)
 int clockPin = 10; // Clock pin (SHCP腳位)
 int dataPin = 11;  // Data pin (DS腳位) 
-int button = 12; //Button 腳位
 const int LED_PIN =  12; 
 byte leds = 0;    // 亮燈的LED數量
 
@@ -20,8 +19,8 @@ void updateright() //由右至左副程式 LSBFIRST
 
 void setup() 
 {
+  Serial.begin(9600);
   // Set all the pins of 74HC595 as OUTPUT
-  pinMode(button, INPUT);
   pinMode(latchPin, OUTPUT);
   pinMode(dataPin, OUTPUT);  
   pinMode(clockPin, OUTPUT);
@@ -37,6 +36,7 @@ void loop()
     bitSet(leds, i);    // 經由多少燈要亮的i，換算成10進位，並把結果交給leds
     updateShiftRegister(); //進行送資料的副程式
     delay(200);
+    Serial.println("Test");
   }
   leds = 0;
   updateright(); //進行送資料的副程式
@@ -45,6 +45,6 @@ void loop()
     bitSet(leds, k);    // 經由多少燈要亮的k，換算成10進位，並把結果交給leds
     updateright(); //進行送資料的副程式
     delay(200);
+    Serial.println("Test2");
   }
 }
-
