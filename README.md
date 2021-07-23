@@ -4,6 +4,8 @@
 ### 74595用法  
 - **MSBFIRST為 由左至右**    
 - **LSBFIRST為 由右至左**    
+**後來更改使用 Arduino library 控制74595**  
+**library:ShiftRegister74HC595** 
 
 
 
